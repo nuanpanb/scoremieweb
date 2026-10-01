@@ -34,7 +34,6 @@
 </div>
 
 <script>
-    // ข้อมูลอัปเดตตามรูปภาพล่าสุด (รวม Midterm)
     const studentData = {
         "67173140020-0": {
             "name": "นางสาว ณัฐสินี วงษ์วิลาศธนากุล",
@@ -49,7 +48,7 @@
                 "Decision Tree": 10
             },
             "total": 80,
-            "percent": 100%,
+            "percent": 1,
             "assignment_total": "25.00",
             "midterm": {
                 "#1 (12.5)": 8.5,
@@ -70,7 +69,7 @@
                 "Decision Tree": 10
             },
             "total": 80,
-            "percent": 100%,
+            "percent": 1,
             "assignment_total": "25.00",
             "midterm": {
                 "#1 (12.5)": 3.25,
@@ -91,7 +90,7 @@
                 "Decision Tree": 10
             },
             "total": 70,
-            "percent": 87.5%,
+            "percent": 0.875,
             "assignment_total": "21.88",
             "midterm": {
                 "#1 (12.5)": 3,
@@ -124,10 +123,7 @@
                 html += `<div class="row"><span>${key}:</span> <strong>${value}</strong></div>`;
             }
             html += `<div class="row"><span>Total (80):</span> <strong>${data.total}</strong></div>`;
-            
-            // ตรงนี้เปลี่ยนจาก "สัดส่วน (%)" เป็น "%" เรียบร้อยแล้ว
             html += `<div class="row"><span>%:</span> <strong>${data.percent}</strong></div>`;
-            
             html += `<div class="row" style="background:#e3f2fd; padding:10px; border-radius:5px; margin-top:5px;"><span><strong>Assignment TotalScore (25):</strong></span> <strong class="total-highlight">${data.assignment_total}</strong></div>`;
 
             html += `<div class="section-title" style="color:#d32f2f; border-bottom-color:#d32f2f;">📝 คะแนนสอบ (Midterm)</div>`;
