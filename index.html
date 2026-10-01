@@ -3,140 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>ระบบตรวจสอบคะแนน</title>
+
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h2 { text-align: center; color: #1a73e8; margin-top: 0; }
-        input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; text-align: center; }
-        button { width: 100%; padding: 12px; background-color: #1a73e8; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; transition: 0.3s; }
-        button:hover { background-color: #1557b0; }
-        #result { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; }
-        .success { background-color: #e6f4ea; border: 1px solid #ceead6; color: #137333; }
-        .error { background-color: #fce8e6; border: 1px solid #fad2cf; color: #c5221f; text-align: center; }
-        .row { display: flex; justify-content: space-between; border-bottom: 1px solid #dbdbdb; padding: 8px 0; font-size: 15px; }
-        .row:last-child { border-bottom: none; }
-        .section-title { font-weight: bold; margin-top: 20px; margin-bottom: 10px; color: #1a73e8; font-size: 16px; border-bottom: 2px solid #1a73e8; padding-bottom: 5px; }
-        .total-highlight { font-weight: bold; color: #d93025; font-size: 16px; }
-        .midterm-highlight { font-weight: bold; color: #0d47a1; font-size: 16px; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 420px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1a73e8;
+            margin-top: 0;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26,115,232,0.15);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #1557b0;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .success {
+            background-color: #e6f4ea;
+            border: 1px solid #ceead6;
+            color: #137333;
+        }
+
+        .error {
+            background-color: #fce8e6;
+            border: 1px solid #fad2cf;
+            color: #c5221f;
+            text-align: center;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            border-bottom: 1px solid #dbdbdb;
+            padding: 8px 0;
+            font-size: 15px;
+        }
+
+        .row:last-child {
+            border-bottom: none;
+        }
+
+        .row span:first-child {
+            flex: 1;
+        }
+
+        .row strong {
+            text-align: right;
+        }
+
+        .section-title {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #1a73e8;
+            font-size: 16px;
+            border-bottom: 2px solid #1a73e8;
+            padding-bottom: 5px;
+        }
+
+        .total-highlight {
+            font-weight: bold;
+            color: #d93025;
+            font-size: 17px;
+        }
+
+        .midterm-highlight {
+            font-weight: bold;
+            color: #0d47a1;
+            font-size: 17px;
+        }
+
+        .score-box {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
     </style>
 </head>
+
 <body>
 
 <div class="card">
-    <h2>📊 ตรวจสอบคะแนน</h2>
-    <p style="text-align: center; color: #5f6368; font-size: 14px; margin-top: -10px;">รายวิชา MIE 1-2569</p>
 
-    <input type="text" id="studentId" placeholder="กรอกรหัสนักศึกษา เช่น 67173140020-0">
-    <button onclick="searchScore()">🔍 ค้นหาคะแนน</button>
-    
+    <h2>📊 ตรวจสอบคะแนน</h2>
+
+    <p style="
+        text-align:center;
+        color:#5f6368;
+        font-size:14px;
+        margin-top:-10px;
+    ">
+        รายวิชา MIE 1-2569
+    </p>
+
+    <input
+        type="text"
+        id="studentId"
+        placeholder="กรอกรหัสนักศึกษา เช่น 67173140020-0"
+        autocomplete="off"
+    >
+
+    <button type="button" id="showScoreBtn">
+        🔍 แสดงคะแนน
+    </button>
+
     <div id="result"></div>
+
 </div>
 
+
 <script>
-    const studentData = {
-        "67173140020-0": {
-            "name": "นางสาว ณัฐสินี วงษ์วิลาศธนากุล",
-            "scores": {
-                "Assignment - 1": 10,
-                "การแก้ปัญหาดอกเบี้ย": 10,
-                "การเปรียบเทียบโครงการด้วยค่าเงินปัจจุบัน": 10,
-                "การเปรียบเทียบโครงการ PW-AW": 10,
-                "ROR - BC Ratio": 10,
-                "ตารางดอกเบี้ย": 10,
-                "Tax and Inflation": 10,
-                "Decision Tree": 10
-            },
-            "total": 80,
-            "percent": 1,
-            "assignment_total": "25.00",
-            "midterm": {
-                "#1 (12.5)": 8.5,
-                "#2 (12.5)": 11.9,
-                "Midterm Total (25)": 20.4
-            }
+
+const studentData = {
+
+    "67173140020-0": {
+
+        name: "นางสาว ณัฐสินี วงษ์วิลาศธนากุล",
+
+        scores: {
+            "Assignment - 1": 10,
+            "การแก้ปัญหาดอกเบี้ย": 10,
+            "การเปรียบเทียบโครงการด้วยค่าเงินปัจจุบัน": 10,
+            "การเปรียบเทียบโครงการ PW-AW": 10,
+            "ROR - BC Ratio": 10,
+            "ตารางดอกเบี้ย": 10,
+            "Tax and Inflation": 10,
+            "Decision Tree": 10
         },
-        "69173110008-3": {
-            "name": "นางสาว วชิราภรณ์ ไทยพัฒนกิจ",
-            "scores": {
-                "Assignment - 1": 10,
-                "การแก้ปัญหาดอกเบี้ย": 10,
-                "การเปรียบเทียบโครงการด้วยค่าเงินปัจจุบัน": 10,
-                "การเปรียบเทียบโครงการ PW-AW": 10,
-                "ROR - BC Ratio": 10,
-                "ตารางดอกเบี้ย": 10,
-                "Tax and Inflation": 10,
-                "Decision Tree": 10
-            },
-            "total": 80,
-            "percent": 1,
-            "assignment_total": "25.00",
-            "midterm": {
-                "#1 (12.5)": 3.25,
-                "#2 (12.5)": 11.9,
-                "Midterm Total (25)": 15.1
-            }
+
+        total: 80,
+
+        percent: 1,
+
+        assignment_total: 25.00,
+
+        midterm: {
+            "#1 (12.5)": 8.5,
+            "#2 (12.5)": 11.9,
+            "Midterm Total (25)": 20.4
+        }
+    },
+
+
+    "69173110008-3": {
+
+        name: "นางสาว วชิราภรณ์ ไทยพัฒนกิจ",
+
+        scores: {
+            "Assignment - 1": 10,
+            "การแก้ปัญหาดอกเบี้ย": 10,
+            "การเปรียบเทียบโครงการด้วยค่าเงินปัจจุบัน": 10,
+            "การเปรียบเทียบโครงการ PW-AW": 10,
+            "ROR - BC Ratio": 10,
+            "ตารางดอกเบี้ย": 10,
+            "Tax and Inflation": 10,
+            "Decision Tree": 10
         },
-        "69173140006-0": {
-            "name": "นาย เจษฐา ภูคดหิน",
-            "scores": {
-                "Assignment - 1": 10,
-                "การแก้ปัญหาดอกเบี้ย": 10,
-                "การเปรียบเทียบโครงการด้วยค่าเงินปัจจุบัน": 10,
-                "การเปรียบเทียบโครงการ PW-AW": 0,
-                "ROR - BC Ratio": 10,
-                "ตารางดอกเบี้ย": 10,
-                "Tax and Inflation": 10,
-                "Decision Tree": 10
-            },
-            "total": 70,
-            "percent": 0.875,
-            "assignment_total": "21.88",
-            "midterm": {
-                "#1 (12.5)": 3,
-                "#2 (12.5)": 8.125,
-                "Midterm Total (25)": 11.1
-            }
+
+        total: 80,
+
+        percent: 1,
+
+        assignment_total: 25.00,
+
+        midterm: {
+            "#1 (12.5)": 3.25,
+            "#2 (12.5)": 11.9,
+            "Midterm Total (25)": 15.1
         }
-    };
+    },
 
-    function searchScore() {
-        const sid = document.getElementById('studentId').value.trim();
-        const resultDiv = document.getElementById('result');
-        resultDiv.style.display = 'block';
 
-        if (!sid) {
-            resultDiv.className = 'error';
-            resultDiv.innerHTML = '⚠️ กรุณากรอกรหัสนักศึกษา';
-            return;
-        }
+    "69173140006-0": {
 
-        if (studentData[sid]) {
-            const data = studentData[sid];
-            resultDiv.className = 'success';
-            
-            let html = `<div class="section-title">👤 ข้อมูลนักศึกษา</div>`;
-            html += `<div class="row"><span>ชื่อ:</span> <strong>${data.name}</strong></div>`;
-            
-            html += `<div class="section-title">📝 คะแนนเก็บ (Assignment)</div>`;
-            for (const [key, value] of Object.entries(data.scores)) {
-                html += `<div class="row"><span>${key}:</span> <strong>${value}</strong></div>`;
-            }
-            html += `<div class="row"><span>Total (80):</span> <strong>${data.total}</strong></div>`;
-            html += `<div class="row"><span>%:</span> <strong>${data.percent}</strong></div>`;
-            html += `<div class="row" style="background:#e3f2fd; padding:10px; border-radius:5px; margin-top:5px;"><span><strong>Assignment TotalScore (25):</strong></span> <strong class="total-highlight">${data.assignment_total}</strong></div>`;
+        name: "นาย เจษฐา ภูคดหิน",
 
-            html += `<div class="section-title" style="color:#d32f2f; border-bottom-color:#d32f2f;">📝 คะแนนสอบ (Midterm)</div>`;
-            html += `<div class="row"><span>#1 (12.5):</span> <strong>${data.midterm["#1 (12.5)"]}</strong></div>`;
-            html += `<div class="row"><span>#2 (12.5):</span> <strong>${data.midterm["#2 (12.5)"]}</strong></div>`;
-            html += `<div class="row" style="background:#e3f2fd; padding:10px; border-radius:5px; margin-top:5px;"><span><strong>Midterm Total (25):</strong></span> <strong class="midterm-highlight">${data.midterm["Midterm Total (25)"]}</strong></div>`;
+        scores: {
+            "Assignment - 1": 10,
+            "การแก้ปัญหาดอกเบี้ย": 10,
+            "การเปรียบเทียบโครงการด้วยค่าเงินปัจจุบัน": 10,
+            "การเปรียบเทียบโครงการ PW-AW": 0,
+            "ROR - BC Ratio": 10,
+            "ตารางดอกเบี้ย": 10,
+            "Tax and Inflation": 10,
+            "Decision Tree": 10
+        },
 
-            resultDiv.innerHTML = html;
-        } else {
-            resultDiv.className = 'error';
-            resultDiv.innerHTML = '❌ ไม่พบข้อมูลรหัสนักศึกษานี้ในระบบ';
+        total: 70,
+
+        percent: 0.875,
+
+        assignment_total: 21.88,
+
+        midterm: {
+            "#1 (12.5)": 3,
+            "#2 (12.5)": 8.125,
+            "Midterm Total (25)": 11.1
         }
     }
+};
+
+
+// ------------------------------------
+// ฟังก์ชันค้นหาและแสดงคะแนน
+// ------------------------------------
+
+function searchScore() {
+
+    const studentIdInput =
+        document.getElementById("studentId");
+
+    const resultDiv =
+        document.getElementById("result");
+
+    // อ่านรหัสและตัดช่องว่าง
+    const sid = studentIdInput.value.trim();
+
+    // ล้างผลการค้นหาเดิม
+    resultDiv.innerHTML = "";
+    resultDiv.className = "";
+    resultDiv.style.display = "block";
+
+
+    // ------------------------------------
+    // 1. ยังไม่ได้กรอกรหัส
+    // ------------------------------------
+
+    if (sid === "") {
+
+        resultDiv.className = "error";
+
+        resultDiv.innerHTML =
+            "⚠️ กรุณากรอกรหัสนักศึกษา";
+
+        studentIdInput.focus();
+
+        return;
+    }
+
+
+    // ------------------------------------
+    // 2. ไม่พบรหัส
+    // ------------------------------------
+
+    if (!studentData[sid]) {
+
+        resultDiv.className = "error";
+
+        resultDiv.innerHTML =
+            "❌ ไม่พบข้อมูลรหัสนักศึกษานี้ในระบบ";
+
+        return;
+    }
+
+
+    // ------------------------------------
+    // 3. พบข้อมูล
+    // ------------------------------------
+
+    const data = studentData[sid];
+
+    resultDiv.className = "success";
+
+
+    let html = "";
+
+
+    // ---------- ข้อมูลนักศึกษา ----------
+
+    html += `
+        <div class="section-title">
+            👤 ข้อมูลนักศึกษา
+        </div>
+    `;
+
+    html += `
+        <div class="row">
+            <span>รหัสนักศึกษา:</span>
+            <strong>${sid}</strong>
+        </div>
+    `;
+
+    html += `
+        <div class="row">
+            <span>ชื่อ:</span>
+            <strong>${data.name}</strong>
+        </div>
+    `;
+
+
+    // ---------- Assignment ----------
+
+    html += `
+        <div class="section-title">
+            📝 คะแนนเก็บ (Assignment)
+        </div>
+    `;
+
+
+    for (const [key, value] of Object.entries(data.scores)) {
+
+        html += `
+            <div class="row">
+                <span>${key}</span>
+                <strong>${value}</strong>
+            </div>
+        `;
+    }
+
+
+    html += `
+        <div class="row">
+            <span>คะแนนรวม Assignment (80)</span>
+            <strong>${data.total}</strong>
+        </div>
+    `;
+
+
+    // แปลง 1 -> 100%, 0.875 -> 87.5%
+
+    const percentage =
+        (data.percent * 100).toFixed(2)
+        .replace(".00", "");
+
+
+    html += `
+        <div class="row">
+            <span>คิดเป็น</span>
+            <strong>${percentage}%</strong>
+        </div>
+    `;
+
+
+    html += `
+        <div class="row score-box">
+
+            <span>
+                <strong>
+                    Assignment Total Score (25)
+                </strong>
+            </span>
+
+            <strong class="total-highlight">
+                ${Number(data.assignment_total).toFixed(2)}
+            </strong>
+
+        </div>
+    `;
+
+
+    // ---------- Midterm ----------
+
+    html += `
+        <div
+            class="section-title"
+            style="
+                color:#d32f2f;
+                border-bottom-color:#d32f2f;
+            "
+        >
+            📚 คะแนนสอบกลางภาค (Midterm)
+        </div>
+    `;
+
+
+    html += `
+        <div class="row">
+
+            <span>
+                ข้อ #1 (12.5)
+            </span>
+
+            <strong>
+                ${data.midterm["#1 (12.5)"]}
+            </strong>
+
+        </div>
+    `;
+
+
+    html += `
+        <div class="row">
+
+            <span>
+                ข้อ #2 (12.5)
+            </span>
+
+            <strong>
+                ${data.midterm["#2 (12.5)"]}
+            </strong>
+
+        </div>
+    `;
+
+
+    html += `
+        <div class="row score-box">
+
+            <span>
+                <strong>
+                    Midterm Total (25)
+                </strong>
+            </span>
+
+            <strong class="midterm-highlight">
+                ${Number(
+                    data.midterm["Midterm Total (25)"]
+                ).toFixed(2)}
+            </strong>
+
+        </div>
+    `;
+
+
+    // ---------- คะแนนรวมปัจจุบัน ----------
+
+    const currentTotal =
+        Number(data.assignment_total)
+        +
+        Number(
+            data.midterm["Midterm Total (25)"]
+        );
+
+
+    html += `
+        <div
+            class="section-title"
+            style="
+                color:#6a1b9a;
+                border-bottom-color:#6a1b9a;
+            "
+        >
+            📊 คะแนนรวมปัจจุบัน
+        </div>
+    `;
+
+
+    html += `
+        <div
+            class="row"
+            style="
+                background:#f3e5f5;
+                padding:12px;
+                border-radius:5px;
+            "
+        >
+
+            <span>
+                <strong>
+                    Assignment + Midterm (50)
+                </strong>
+            </span>
+
+            <strong
+                style="
+                    color:#6a1b9a;
+                    font-size:18px;
+                "
+            >
+                ${currentTotal.toFixed(2)} / 50
+            </strong>
+
+        </div>
+    `;
+
+
+    // แสดงผล
+    resultDiv.innerHTML = html;
+}
+
+
+// ------------------------------------
+// Click ปุ่ม "แสดงคะแนน"
+// ------------------------------------
+
+document
+    .getElementById("showScoreBtn")
+    .addEventListener(
+        "click",
+        searchScore
+    );
+
+
+// ------------------------------------
+// กด Enter เพื่อแสดงคะแนนได้
+// ------------------------------------
+
+document
+    .getElementById("studentId")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                event.preventDefault();
+
+                searchScore();
+            }
+        }
+    );
+
 </script>
 
 </body>
